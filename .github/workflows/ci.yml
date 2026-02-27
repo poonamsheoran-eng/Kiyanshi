@@ -1,4 +1,4 @@
-name: Multi Job Pipeline
+name: Controlled Pipeline
 
 on:
   push:
@@ -8,15 +8,12 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Build step
-        run: echo "Building project."
+      - run: echo "Building project."
   test:
     runs-on: ubuntu-latest
     steps:
-      - name: Test Step
-        run: echo "Running tests..."
+      - run: echo "Running tests..."
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Deploy Step
-        run: echo "Deploying application..."
+      - run: echo "Deploying application..."
