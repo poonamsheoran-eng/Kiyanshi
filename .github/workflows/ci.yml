@@ -1,13 +1,17 @@
-name: Controlled Pipeline
+name: Artifact Demo
 
 on:
   push:
-    branches:
-      - main
+
 jobs:
-  env-demo:
+  build:
     runs-on: ubuntu-latest
-    env:
-      APP_NAME: kiyanshi
     steps:
-      - run: echo $APP_NAME
+      - name: Create file
+        run: echo "This is my build file" > build.txt
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: my-build
+          path: build.txt
