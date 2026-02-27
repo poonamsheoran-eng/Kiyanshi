@@ -5,9 +5,8 @@ on:
     branches:
       - main
 jobs:
-  first:
+  secret-demo:
     runs-on: ubuntu-latest
     steps:
-      - run: python --version
-      - run: node --version
-      - run: docker --version
+      - name: Print secret
+        run: echo ${{ secrets.MY_SECRET }}
