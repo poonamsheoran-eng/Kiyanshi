@@ -5,8 +5,9 @@ on:
     branches:
       - main
 jobs:
-  secret-demo:
+  env-demo:
     runs-on: ubuntu-latest
+    env:
+      APP_NAME: kiyanshi
     steps:
-      - name: Print secret
-        run: echo ${{ secrets.MY_SECRET }}
+      - run: echo $APP_NAME
