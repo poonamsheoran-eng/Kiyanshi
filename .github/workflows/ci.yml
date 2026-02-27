@@ -1,4 +1,4 @@
-name: Artifact Demo
+name: Artifact Transfer Demo
 
 on:
   push:
@@ -7,11 +7,19 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Create file
-        run: echo "This is my build file" > build.txt
-
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
+      - run: echo "Build output data" > build.txt
+      - uses: actions/upload-artifact@v4
         with:
           name: my-build
           path: build.txt
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: my-build
+
+      - name: Show file
+        run: cat build.txt
