@@ -8,14 +8,5 @@ jobs:
   build:
     runs-on: windows-latest
     steps:
-      - run: exit 1
-  test:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo "Running tests..."
-  deploy:
-    needs: test
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo "Deploying application..."
+      - name: Check OS
+        run: uname -a
