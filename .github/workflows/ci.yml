@@ -1,12 +1,22 @@
-name: My first CI
+name: Multi Job Pipeline
 
 on:
   push:
     branches:
       - main
 jobs:
-  first-job:
+  build:
     runs-on: ubuntu-latest
     steps:
-      - name: Say Hello
-        run: echo "Hello Poonam."
+      - name: Build step
+        run: echo "Building project."
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Test Step
+        run: echo "Running tests..."
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy Step
+        run: echo "Deploying application..."
