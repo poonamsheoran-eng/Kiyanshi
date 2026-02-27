@@ -5,8 +5,12 @@ on:
     branches:
       - main
 jobs:
-  build:
+  first:
     runs-on: ubuntu-latest
     steps:
-      - name: Check OS
-        run: echo $RUNNER_OS
+      - run: echo "Hello" > file.txt
+
+  second:
+    runs-on: ubuntu-latest
+    steps:
+      - run: cat file.txt
