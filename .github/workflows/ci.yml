@@ -8,9 +8,7 @@ jobs:
   first:
     runs-on: ubuntu-latest
     steps:
-      - run: echo "Hello" > file.txt
+      - run: sudo apt update
+      - run: sudo apt install tree -y
+      - run: tree
 
-  second:
-    runs-on: ubuntu-latest
-    steps:
-      - run: cat file.txt
