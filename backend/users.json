@@ -1,0 +1,12 @@
+{
+  "9999999999": {
+    "password": "123456",
+    "role": "admin",
+    "name": "Admin"
+  },
+  "9877641979": {
+    "password": "123456",
+    "role": "customer",
+    "name": "User_1979"
+  }
+}

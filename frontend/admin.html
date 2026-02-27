@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Dashboard - Kiyanshi Organics</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', sans-serif; background: #fffbec; min-height: 100vh; }
+
+    header {
+      background: #F5C518;
+      padding: 16px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    header h1 { font-size: 20px; color: #fff; font-weight: 700; }
+    .badge { background: #fff; color: #e0a800; font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: 20px; }
+
+    .logout-btn {
+      background: #fff;
+      border: none;
+      color: #e0a800;
+      font-weight: 700;
+      padding: 8px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 13px;
+    }
+
+    .logout-btn:hover { background: #f0f0f0; }
+
+    .content {
+      padding: 40px 32px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .welcome {
+      background: linear-gradient(135deg, #F5C518, #f0a500);
+      border-radius: 16px;
+      padding: 32px;
+      color: #fff;
+      margin-bottom: 32px;
+    }
+
+    .welcome h2 { font-size: 26px; margin-bottom: 8px; }
+    .welcome p { opacity: 0.9; font-size: 14px; }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+
+    .stat-card {
+      background: #fff;
+      border-radius: 12px;
+      padding: 24px;
+      text-align: center;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    }
+
+    .stat-card .icon { font-size: 32px; margin-bottom: 8px; }
+    .stat-card .num { font-size: 28px; font-weight: 700; color: #333; }
+    .stat-card .label { font-size: 13px; color: #888; margin-top: 4px; }
+
+    .section-title { font-size: 16px; font-weight: 700; color: #333; margin-bottom: 12px; }
+
+    .users-table {
+      background: #fff;
+      border-radius: 12px;
+      padding: 24px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    }
+
+    table { width: 100%; border-collapse: collapse; }
+    th { text-align: left; font-size: 12px; font-weight: 700; color: #888; padding: 8px 12px; text-transform: uppercase; border-bottom: 2px solid #f0f0f0; }
+    td { padding: 12px; font-size: 14px; color: #333; border-bottom: 1px solid #f8f8f8; }
+    tr:last-child td { border-bottom: none; }
+
+    .role-badge {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .role-admin { background: #fff3cd; color: #856404; }
+    .role-customer { background: #d4edda; color: #155724; }
+  </style>
+</head>
+<body>
+  <header>
+    <div style="display:flex;align-items:center;gap:12px">
+      <span style="font-size:24px">🛒</span>
+      <h1>Kiyanshi Organics</h1>
+      <span class="badge">ADMIN</span>
+    </div>
+    <button class="logout-btn" onclick="window.location.href='/'">🚪 Logout</button>
+  </header>
+
+  <div class="content">
+    <div class="welcome">
+      <h2>👋 Welcome, Admin!</h2>
+      <p>You are logged in as the administrator. Manage your store from here.</p>
+    </div>
+
+    <div class="stats">
+      <div class="stat-card">
+        <div class="icon">👥</div>
+        <div class="num" id="total-users">—</div>
+        <div class="label">Total Users</div>
+      </div>
+      <div class="stat-card">
+        <div class="icon">🛍️</div>
+        <div class="num" id="total-customers">—</div>
+        <div class="label">Customers</div>
+      </div>
+      <div class="stat-card">
+        <div class="icon">🔑</div>
+        <div class="num">1</div>
+        <div class="label">Admin Accounts</div>
+      </div>
+    </div>
+
+    <div class="users-table">
+      <div class="section-title">Registered Users</div>
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Mobile Number</th>
+            <th>Role</th>
+          </tr>
+        </thead>
+        <tbody id="users-body">
+          <tr><td colspan="3" style="color:#aaa;text-align:center">Loading...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    // Load users from server (dummy display since we don't have a /users endpoint yet)
+    // You can add a /users endpoint in app.py to fetch real data
+    document.getElementById('total-users').textContent = '—';
+    document.getElementById('total-customers').textContent = '—';
+
+    // Try fetching users if endpoint exists
+    fetch('/users')
+      .then(r => r.json())
+      .then(users => {
+        const entries = Object.entries(users);
+        const customers = entries.filter(([, v]) => v.role === 'customer');
+        document.getElementById('total-users').textContent = entries.length;
+        document.getElementById('total-customers').textContent = customers.length;
+
+        const tbody = document.getElementById('users-body');
+        if (entries.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="3" style="color:#aaa;text-align:center">No users yet</td></tr>';
+          return;
+        }
+        tbody.innerHTML = entries.map(([mobile, data], i) => `
+          <tr>
+            <td>${i + 1}</td>
+            <td>${mobile}</td>
+            <td><span class="role-badge role-${data.role}">${data.role.toUpperCase()}</span></td>
+          </tr>
+        `).join('');
+      })
+      .catch(() => {
+        document.getElementById('users-body').innerHTML =
+          '<tr><td colspan="3" style="color:#aaa;text-align:center">Add /users endpoint to app.py to see data</td></tr>';
+      });
+  </script>
+</body>
+</html>

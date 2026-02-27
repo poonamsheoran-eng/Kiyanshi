@@ -2,7 +2,7 @@ from flask import Flask, request, jsonify, session
 import json
 import os
 
-app = Flask(__name__, static_folder='.', static_url_path='')
+app = Flask(__name__, static_folder='../frontend', static_url_path='')
 app.secret_key = 'kiyanshi_organics_secret_key'
 
 # File to store users
